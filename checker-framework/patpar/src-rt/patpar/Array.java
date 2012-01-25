@@ -2,11 +2,13 @@ package patpar;
 
 import java.util.List;
 
-abstract class Array1D<T> {
+abstract class Array<T> {
 	private Task<?> owner;
 	private boolean divided;
 
-	Array1D() {
+	Array() {
+		owner = PatPar.getTask();
+		divided = false;
 	}
 	
 	protected void checkAccess(boolean isWrite) /*@ReadOnly*/ {

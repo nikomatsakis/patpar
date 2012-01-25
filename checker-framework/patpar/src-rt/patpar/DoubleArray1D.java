@@ -2,7 +2,7 @@ package patpar;
 
 
 
-public final class DoubleArray1D extends Array1D<Double> {
+public final class DoubleArray1D extends Array<Double> {
 	private double[] data;
 	
 	public DoubleArray1D(int size) {

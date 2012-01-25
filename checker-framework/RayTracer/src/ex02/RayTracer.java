@@ -7,6 +7,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import patpar.Closure;
+import patpar.IntArray;
+import patpar.PatPar;
+
 import ex02.blas.MathUtils;
 import ex02.entities.Camera;
 import ex02.entities.Intersection;
@@ -40,10 +44,20 @@ public class RayTracer {
 	int superSampleWidth;
 	
 	
-	public static void main(String[] args) throws Exception 
+	public static void main(final String[] args) throws Exception 
 	{
-		RayTracer tracer = new RayTracer();
-		tracer.runMain(args);		
+		PatPar.root(new Closure<Void>() {
+			@Override
+			protected Void compute() {
+				try {
+					RayTracer tracer = new RayTracer();
+					tracer.runMain(args);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+		});
 	}	
 	
 	public Ray constructRayThroughPixel(int x, int y, double sampleXOffset, double sampleYOffset) throws Exception {										 																
@@ -190,11 +204,10 @@ public class RayTracer {
 		return color;
 	}
 	
-	void renderTo(
+	int[] render(
 			String filename,
 			int h,
-			int w, 
-			int[] imageData) throws Parser.ParseException, Exception
+			int w) throws Parser.ParseException, Exception
 	{ 									
 		Parser parser = new Parser();
 		parser.parse(new FileReader(filename));
@@ -214,7 +227,8 @@ public class RayTracer {
 		superSampleWidth = scene.getSuperSampleWidth();
 		viewplaneUp = camera.getViewplaneUp();
 		direction = camera.getDirection();
-											
+									
+		IntArray result = new IntArray(w * h);
 		for(int y = 0; y < h; ++y)
 		{			
 			for(int x = 0; x < w; ++x)
@@ -255,12 +269,12 @@ public class RayTracer {
 				}
 					
 				// Plot the pixel
-				int cc = Utils.floatArrayToColorInt(color);				
-				imageData[x + y * w] = cc;
+				int cc = Utils.floatArrayToColorInt(color);
+				result.set(x + y * w, cc);
 			}
 		}
 		
-		writeImage(filename, h, w, imageData);
+		return result.toArray();
 	}
 	
 	private void writeImage(String filename, int h, int w, int[] imageData) throws IOException {
@@ -275,8 +289,8 @@ public class RayTracer {
 		for (String fileName : args) {
 			int height = 480;
 			int width = 640;
-			int[] imgdata = new int[height * width];
-			renderTo(fileName, height, width, imgdata);
+			int[] imgData = render(fileName, height, width);
+			writeImage(fileName, height, width, imgData);
 		}
 	}
 

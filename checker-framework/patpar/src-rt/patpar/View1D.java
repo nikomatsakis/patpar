@@ -1,10 +1,10 @@
 package patpar;
 
-public class View1D<R extends Range,T> extends Array1D<T> {
-	private final Array1D<T> array;
+public class View1D<R extends Range,T> extends Array<T> {
+	private final Array<T> array;
 	public final R range;
 	
-	View1D(Array1D<T> array, R range) {
+	View1D(Array<T> array, R range) {
 		super();
 		this.array = array;
 		this.range = range;

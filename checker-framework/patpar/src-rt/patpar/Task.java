@@ -36,7 +36,7 @@ public class Task<T> {
 			protected T compute() {
 				final Task<?> t = PatPar.pushTask(Task.this);
 				try {
-					return closure.fork().join();
+					return closure.compute();
 				} finally {
 					completed = true;
 					PatPar.popTask(t);
