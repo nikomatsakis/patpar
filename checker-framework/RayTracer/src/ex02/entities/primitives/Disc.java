@@ -103,7 +103,7 @@ public class Disc extends Primitive {
 	}
 
 	@Override
-	public double[] getNormal(double[] point) throws Exception {
+	public double[] getNormal(double[] point) {
 		return normal;
 	}
 
@@ -122,12 +122,7 @@ public class Disc extends Primitive {
 		initializeReferenceVector();
 		pivotVector = MathUtils.crossProduct(normal, referenceVector);
 		
-		try {
-			MathUtils.normalize(pivotVector);			
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
+		MathUtils.normalize(pivotVector);			
 	}
 	
 	
@@ -158,11 +153,7 @@ public class Disc extends Primitive {
 		// parameterize u:
 		double u = MathUtils.norm(centerToPoint) / radius;		
 		
-		try {
-			MathUtils.normalize(centerToPoint);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}		
+		MathUtils.normalize(centerToPoint);
 		
 		// parameterize v:
 		double q = MathUtils.dotProduct(pivotVector, centerToPoint);

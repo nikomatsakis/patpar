@@ -33,7 +33,7 @@ public class Cylinder extends Primitive {
 	 * @see ex02.entities.primitives.Primitive#getNormal(double[])
 	 */
 	@Override
-	public double[] getNormal(double[] point) throws Exception {
+	public double[] getNormal(double[] point) {
 		
 		// Formulas according to http://answers.yahoo.com/question/index?qid=20080218071458AAYz1s1
 		double[] AP, center;

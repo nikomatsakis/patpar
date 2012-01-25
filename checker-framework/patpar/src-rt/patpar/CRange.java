@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class CRange extends Range {
-	private final int min, max;
+public class CRange extends Range {
+	public final int min, max;
 	
 	public CRange(int min, int max) {
 		super();

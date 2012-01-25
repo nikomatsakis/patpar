@@ -26,7 +26,7 @@ public class Torus extends Primitive {
 	private double alpha, beta, gamma;
 
 	@Override
-	public double[] getNormal(double[] point) throws Exception {
+	public double[] getNormal(double[] point) {
 		double[] normal = { 0, 0, 0};
 		
 		double innerComponent = MathUtils.sqr(point[0])  +  
@@ -68,11 +68,7 @@ public class Torus extends Primitive {
 		MathUtils.addVectorAndMultiply(pointOnRing, MathUtils.oppositeVector(normal), tubeRadius);
 		double[] vectorToRing = MathUtils.calcPointsDiff(center, pointOnRing);
 		
-		try {
-			MathUtils.normalize(vectorToRing);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		MathUtils.normalize(vectorToRing);
 		
 		double u = Math.acos(MathUtils.dotProduct(referenceVector, vectorToRing));
 	    if(MathUtils.dotProduct(MathUtils.crossProduct(referenceVector, vectorToRing), normal) < 0)
@@ -84,11 +80,7 @@ public class Torus extends Primitive {
 		
 	    double[] fromRingToPoint = MathUtils.calcPointsDiff(pointOnRing, point);
 		
-	    try {
-			MathUtils.normalize(fromRingToPoint);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		MathUtils.normalize(fromRingToPoint);
 
 	    double v = Math.acos(MathUtils.dotProduct(referenceVector, fromRingToPoint));
 //	    if(MathUtils.dotProduct(MathUtils.crossProduct(referenceVector, fromRingToPoint), normal) < 0)
@@ -130,13 +122,7 @@ public class Torus extends Primitive {
 		double[] translatedPosition = { MPosition.get(0, 0) , MPosition.get(1, 0) , MPosition.get(2, 0) };
 		double[] translatedDirection = { MDirection.get(0, 0) , MDirection.get(1, 0) , MDirection.get(2, 0) };
 		
-		
-		try {
-			MathUtils.normalize(translatedDirection);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		MathUtils.normalize(translatedDirection);
 		
 		// Reconstruct the ray after translation
 		ray.setPosition(translatedPosition);

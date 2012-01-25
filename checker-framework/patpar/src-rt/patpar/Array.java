@@ -7,8 +7,11 @@ abstract class Array<T> {
 	private boolean divided;
 
 	Array() {
-		owner = PatPar.getTask();
 		divided = false;
+	}
+	
+	void updateOwner() {
+		owner = PatPar.getTask();
 	}
 	
 	protected void checkAccess(boolean isWrite) /*@ReadOnly*/ {
@@ -66,15 +69,16 @@ abstract class Array<T> {
 	abstract Range range();
 	
 	final <R extends Range> void divide(
-			final Closure1<View1D<R, T>> cl,
+			final Closure1<View<R, T>> cl,
 			List<? extends R> ranges) {
 		checkAccess(true);
 		divided = true;
 		for (R range : ranges) {
-			final View1D<R, T> view = new View1D<>(this, range);
+			final View<R, T> view = new View<>(this, range);
 			PatPar.fork(new Closure<Void>() {
 				@Override
 				protected Void compute() {
+					view.updateOwner();
 					cl.compute(view);
 					return null;
 				}
@@ -84,7 +88,7 @@ abstract class Array<T> {
 		divided = false;
 	}
 	
-	public final void divideC(final Closure1<View1D<CRange, T>> cl) {
+	public final void divideC(final Closure1<View<CRange, T>> cl) {
 		Task<?> task = PatPar.getTask();
 		int par = task.guessHowManyTasksToMake();
 		List<CRange> ranges = range().divideC(par);

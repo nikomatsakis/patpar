@@ -63,7 +63,7 @@ public class MathUtils {
 	}
 
 	// Normalizes a vector
-	public static void normalize(double[] vec) throws ParseException {
+	public static void normalize(double[] vec) {
 		double norm = norm(vec);
 		
 		if (norm == 0)

@@ -29,7 +29,7 @@ public abstract class Primitive implements IEntity {
 	}
 	
 	// Return a normal vector for the given point
-	public abstract double[] getNormal(double[] point) throws Exception;
+	public abstract double[] getNormal(double[] point);
 	
 	// Return texture coordinates (2D parameterization) for the given point
 	public abstract double[] getTextureCoords(double[] point);

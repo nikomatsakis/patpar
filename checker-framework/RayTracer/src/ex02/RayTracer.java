@@ -7,10 +7,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import patpar.CRange;
 import patpar.Closure;
+import patpar.Closure1;
 import patpar.IntArray;
 import patpar.PatPar;
-
+import patpar.View;
 import ex02.blas.MathUtils;
 import ex02.entities.Camera;
 import ex02.entities.Intersection;
@@ -60,7 +62,7 @@ public class RayTracer {
 		});
 	}	
 	
-	public Ray constructRayThroughPixel(int x, int y, double sampleXOffset, double sampleYOffset) throws Exception {										 																
+	public Ray constructRayThroughPixel(int x, int y, double sampleXOffset, double sampleYOffset) {
 		Ray ray = new Ray(eye, direction, screenDist);
 		double[] endPoint = ray.getEndPoint();		
 		
@@ -100,7 +102,7 @@ public class RayTracer {
 		return new Intersection(minDistance, minPrimitive);
 	}
 	
-	public double[] getColor(Ray ray, Intersection intersection, int recursionDepth) throws Exception {
+	public double[] getColor(Ray ray, Intersection intersection, int recursionDepth) {
 		// Avoid infinite loops and help performance by limiting the recursion depth
 		if (recursionDepth > MAX_REFLECTION_RECURSION_DEPTH) 
 			return new double [] { 0, 0, 0 };
@@ -206,8 +208,8 @@ public class RayTracer {
 	
 	int[] render(
 			String filename,
-			int h,
-			int w) throws Parser.ParseException, Exception
+			final int h,
+			final int w) throws Parser.ParseException, Exception
 	{ 									
 		Parser parser = new Parser();
 		parser.parse(new FileReader(filename));
@@ -229,52 +231,59 @@ public class RayTracer {
 		direction = camera.getDirection();
 									
 		IntArray result = new IntArray(w * h);
-		for(int y = 0; y < h; ++y)
-		{			
-			for(int x = 0; x < w; ++x)
-			{									
-				int hits = 0;
-				double[] color = new double[3];								
-				
-				// Supersampling loops
-				for (int k = 0; k < superSampleWidth; k++) {															
-					for (int l = 0; l < superSampleWidth; l++) {					
-						double[] sampleColor = null;
-						
-						// Create the ray
-						Ray ray = constructRayThroughPixel(x, y, k, l);
-						
-						// Find the intersecting primitive
-						Intersection intersection = findIntersection(ray, null);
-						
-						// If we hit something, get its color
-						if (intersection.getPrimitive() != null) {
-							hits++;
-							sampleColor = getColor(ray, intersection, 1);
-							MathUtils.addVector(color, sampleColor);
-																		
-							ray.setMagnitude(intersection.getDistance());																																						
-						}
-					}					
+		result.divideC(new Closure1<View<CRange,Integer>>() {
+			protected void compute(View<CRange, Integer> view) {
+				CRange range = view.range;
+				for (int i = range.min; i < range.max; i++) {
+					int y = i / w;
+					int x = i - y * w;
+					int cc = RayTracer.this.compute(y, x);
+					view.set(x + y * w, cc);
 				}
-				
-				// If we didn't anything in any of the samples, use the background color
-				if (hits == 0) {
-					color = scene.getBackgroundAt(x, y);			
-				}	
-				else
-				{
-					// Average the cumulative color values
-					MathUtils.multiplyVectorByScalar(color, 1F / hits);
-				}
-					
-				// Plot the pixel
-				int cc = Utils.floatArrayToColorInt(color);
-				result.set(x + y * w, cc);
 			}
-		}
+		});
 		
 		return result.toArray();
+	}
+
+	private int compute(int y, int x) {
+		int hits = 0;
+		double[] color = new double[3];								
+		
+		// Supersampling loops
+		for (int k = 0; k < superSampleWidth; k++) {															
+			for (int l = 0; l < superSampleWidth; l++) {					
+				double[] sampleColor = null;
+				
+				// Create the ray
+				Ray ray = constructRayThroughPixel(x, y, k, l);
+				
+				// Find the intersecting primitive
+				Intersection intersection = findIntersection(ray, null);
+				
+				// If we hit something, get its color
+				if (intersection.getPrimitive() != null) {
+					hits++;
+					sampleColor = getColor(ray, intersection, 1);
+					MathUtils.addVector(color, sampleColor);
+																
+					ray.setMagnitude(intersection.getDistance());																																						
+				}
+			}					
+		}
+		
+		// If we didn't anything in any of the samples, use the background color
+		if (hits == 0) {
+			color = scene.getBackgroundAt(x, y);			
+		}	
+		else
+		{
+			// Average the cumulative color values
+			MathUtils.multiplyVectorByScalar(color, 1F / hits);
+		}
+			
+		// Plot the pixel
+		return Utils.floatArrayToColorInt(color);
 	}
 	
 	private void writeImage(String filename, int h, int w, int[] imageData) throws IOException {

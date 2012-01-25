@@ -119,7 +119,7 @@ public class Sphere extends Primitive {
 	}
 
 	@Override
-	public double[] getNormal(double[] point) throws Exception {								
+	public double[] getNormal(double[] point) {
 		double[] normal = MathUtils.calcPointsDiff(center, point);		
 		MathUtils.normalize(normal);
 		

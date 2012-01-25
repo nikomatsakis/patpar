@@ -20,7 +20,7 @@ public class Box extends Primitive {
 	 * Get the normal of the rectangle which is currently intersected.
 	 */
 	@Override
-	public double[] getNormal(double[] point) throws Exception {
+	public double[] getNormal(double[] point) {
 		return currentIntersectingRectangle.getNormal(point);
 	}
 

@@ -5,6 +5,7 @@ public class IntArray extends Array<Integer> {
 	
 	public IntArray(int size) {
 		this.data = new int[size];
+		updateOwner();
 	}
 
 	@Override

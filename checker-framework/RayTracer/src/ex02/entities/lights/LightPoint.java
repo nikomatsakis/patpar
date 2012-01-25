@@ -44,7 +44,7 @@ public class LightPoint extends Light {
 	}
 
 	@Override
-	public double[] getVectorToLight(double[] pointOfIntersection) throws Exception {
+	public double[] getVectorToLight(double[] pointOfIntersection) {
 		double[] vec = MathUtils.calcPointsDiff(pointOfIntersection, position);
 		MathUtils.normalize(vec);
 		

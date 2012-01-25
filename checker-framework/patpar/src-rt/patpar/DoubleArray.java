@@ -2,11 +2,12 @@ package patpar;
 
 
 
-public final class DoubleArray1D extends Array<Double> {
+public final class DoubleArray extends Array<Double> {
 	private double[] data;
 	
-	public DoubleArray1D(int size) {
+	public DoubleArray(int size) {
 		data = new double[size];
+		updateOwner();
 	}
 
 	@Override

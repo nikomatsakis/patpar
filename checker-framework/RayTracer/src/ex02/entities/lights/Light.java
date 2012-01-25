@@ -9,7 +9,7 @@ public abstract class Light implements IEntity {
 	
 	public abstract double[] getAmountOfLight(double[] point);
 	
-	public abstract double[] getVectorToLight(double[] pointOfIntersection) throws Exception;
+	public abstract double[] getVectorToLight(double[] pointOfIntersection);
 	
 	public boolean parseParameter(String name, String[] args) throws Exception {
 		boolean parsed = false;

@@ -41,7 +41,7 @@ public class LightDirected extends Light {
 	}
 
 	@Override
-	public double[] getVectorToLight(double[] pointOfIntersection) throws Exception {
+	public double[] getVectorToLight(double[] pointOfIntersection) {
 		return oppositeDirection;
 	}
 
