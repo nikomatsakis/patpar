@@ -1,0 +1,23 @@
+scene:
+background-col=0.5 0.5 1
+ambient-light=1 1 1
+super-samp-width=1
+
+camera:
+eye = 0.5 0.5 2
+look-at = 0.5 0.5 0
+screen-dist = 1
+up-direction = 0 1 0
+
+box:
+p0 = 0 0 0
+p1 = 1 0 0
+p2 = 0 1 0
+p3 = 0 0 -1
+mtl-diffuse=0.98 0.48 0.4
+mtl-specular=0.7 0.7 0.7
+mtl-shininess=20
+
+light-directed:
+direction=0.3 -0.7 -1
+color= 0.8 0.8 0.8

@@ -1,0 +1,41 @@
+scene:
+background-col=0.5 0.5 1
+ambient-light=1 1 1
+super-samp-width=1
+
+camera:
+eye = 0 0 4
+look-at = 0 0 0
+screen-dist = 1
+up-direction = 0 1 0
+
+torus:
+center = 0 0 0
+central-radius = 1
+tube-radius = 0.5
+normal = 0 1 1
+mtl-ambient=0.4 0.2 0.2
+mtl-diffuse=0.3 0.3 0.5
+mtl-specular=0.6 0.6 0.8
+
+
+cylinder:
+start = -0.5 0.5 -2
+direction = 0.4 -0.3 1
+length = 4.5
+radius = 0.4
+mtl-ambient=0.1 0.3 0.1
+mtl-diffuse=0.5 0.5 0.5
+mtl-specular=1 1 1
+
+
+rectangle:
+p0 = -3 -1.5 -3 
+p1 = -3 -1.5 3
+p2 = 3 -1.5 -3
+mtl-type = checkers
+mtl-ambient=0.2 0.2 0.2
+
+light-directed:
+direction=0 -1 -1
+color= 1 1 1

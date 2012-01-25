@@ -1,0 +1,20 @@
+scene:
+background-col=0.5 0.5 1
+
+camera:
+eye = 0 0.3 2
+direction = 0 0 -1
+screen-dist = 1
+up-direction = 0 1 0
+
+rectangle:
+p0=-1 0 -1
+p1=-1 0 1
+p2=1 0 -1
+
+sphere:
+center=0 0.5 0
+radius=0.5
+
+light-directed:
+direction=0 -1 -1

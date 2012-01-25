@@ -1,0 +1,30 @@
+scene:
+background-col=0.5 0.5 1
+ambient-light=1 1 1
+
+camera:
+eye = -1 1.7 1
+look-at = 0 0 0
+screen-dist = 1
+up-direction = 0 1 0
+
+rectangle:
+p0=-2 0 -2
+p1=-2 0 2
+p2=2 0 -2
+
+sphere:
+center = 0 0.5 0
+radius = 0.5
+mtl-diffuse=0.98 0.48 0.4
+
+sphere:
+center= 0 1 0.3
+radius=0.1
+
+light-area:
+p0= 0 4 -2
+p1= 0 4.5 -2
+p2= 0 4 -2.5
+grid-width=5
+color = 0.4 0.4 0.4

@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Wed Jul 16 23:38:50 IDT 2008
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=ex02_fat.jar
+manifest.mergeall=true
+manifest.mainclass=ex02.RayTracer
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<po|ex02>~ex2/
+includes=

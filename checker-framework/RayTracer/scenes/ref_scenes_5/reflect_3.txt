@@ -1,0 +1,53 @@
+scene:
+background-col=0.5 0.5 1
+ambient-light=1 1 1
+super-samp-width=1
+
+camera:
+eye = -1.8 1.7 1.4
+look-at = -0.5 0.5 0
+screen-dist = 1
+up-direction = 0 1 0
+screen-width=1.2
+
+rectangle:
+p0=-2 0 -2
+p1=-2 0 2
+p2=2 0 -2
+mtl-type=checkers
+
+sphere:
+center = 0 0.5 0
+radius = 0.4
+mtl-diffuse=0 0 0
+mtl-specular=0.2 0.2 0.2
+mtl-shininess=20
+reflectance=0.5
+
+sphere:
+center = -0.7 0.5 0.7
+radius = 0.4
+mtl-diffuse=0 0 0
+mtl-specular=0.2 0.2 0.2
+mtl-shininess=20
+reflectance=0.5
+
+sphere:
+center= -1.1 0.9 -0.4
+radius=0.5
+mtl-diffuse=0 0 0
+mtl-specular=0.2 0.2 0.2
+mtl-shininess=20
+reflectance=0.5
+
+light-point:
+pos= 0 4 -2
+color = 0.1 0.1 0.4
+
+light-point:
+pos=-0.5 0.5 -0.5
+color = 1 0 0
+
+light-directed:
+direction=0 -1 -1
+color= 0.8 0.8 0.8

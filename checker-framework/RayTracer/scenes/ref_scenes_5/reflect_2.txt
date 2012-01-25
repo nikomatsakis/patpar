@@ -1,0 +1,57 @@
+scene:
+background-col=0.5 0.5 1
+background-tex=kenny.png
+ambient-light=1 1 1
+super-samp-width=1
+
+camera:
+eye = -1 1.7 1
+look-at = 0 0.5 0
+screen-dist = 1
+up-direction = 0 1 0
+
+rectangle:
+p0=-2 0 -2
+p1=-2 0 2
+p2=2 0 -2
+mtl-type=checkers
+
+sphere:
+center = 0 0.5 0
+radius = 0.5
+mtl-diffuse=0 0 0
+mtl-specular=0.2 0.2 0.2
+mtl-shininess=20
+reflectance=0.5
+
+cylinder:
+start=-1 0 0
+direction=0 1 0
+length=1
+radius=0.15
+reflectance=0.5
+
+disc:
+center=-1 1 0
+normal=0 1 0
+radius=0.15
+
+sphere:
+center = 1.3 0.2 1
+radius = 0.2
+
+sphere:
+center= -0.5 1 0
+radius=0.1
+
+light-point:
+pos= 0 4 -2
+color = 0.1 0.1 0.4
+
+light-point:
+pos=-0.5 0.5 -0.5
+color = 1 0 0
+
+light-directed:
+direction=0 -1 -1
+color= 0.8 0.8 0.8

@@ -1,0 +1,68 @@
+scene:
+background-col=0.3 0.3 0.6
+ambient-light=1 1 1
+
+camera:
+eye = -1 1.7 1
+#eye = 0 0.5 2
+look-at = 0 0.5 0
+screen-dist = 1
+up-direction = 0 1 0
+
+rectangle:
+p0=-1.5 0 1.5
+p1=2 0 1.5
+p2=-1.5 0 -2
+mtl-specular=0 0 0
+
+sphere:
+center = 0 0.5 0
+radius = 0.5
+mtl-diffuse=0.98 0.48 0.4
+mtl-specular=1 1 1
+
+box:
+p0=-0.7 0 0.7
+p1=-0.7 0 0.5
+p2=-0.5 0 0.7
+p3=-0.7 0.9 0.7
+mtl-diffuse=0.32 0.66 0.89
+
+box:
+p0=0.7 0 -0.7
+p1=0.7 0 -0.5
+p2=0.5 0 -0.7
+p3=0.7 0.9 -0.7
+mtl-diffuse=0.32 0.66 0.89
+
+cylinder:
+start=-0.6 0 -0.6
+radius=0.1
+direction=0 1 0
+length=0.8
+mtl-diffuse=0.98 0.47 0.84
+
+disc:
+center=-0.6 0.8 -0.6
+radius=0.1
+normal=0 1 0
+mtl-diffuse=0.98 0.47 0.84
+
+cylinder:
+start=0.6 0 0.6
+radius=0.1
+direction=0 1 0
+length=0.8
+mtl-diffuse=0.98 0.47 0.84
+
+disc:
+center=0.6 0.8 0.6
+radius=0.1
+normal=0 1 0
+mtl-diffuse=0.98 0.47 0.84
+
+light-directed:
+direction=0 -1 -0.9
+color = 1 1 1
+
+

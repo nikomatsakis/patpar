@@ -1,0 +1,21 @@
+scene:
+background-col=0.2 0.2 0.5
+ambient-light=1 1 1
+super-samp-width=1
+
+camera:
+eye = -2 0.5 0.2
+look-at = 0 0 0
+screen-dist = 1
+up-direction = 0 1 0
+
+sphere:
+center=0 0 0
+radius=1
+mtl-type=texture
+texture=kenny.png
+
+light-directed:
+direction=1.3 -0.9 -1.4
+color= 1 1 1
+

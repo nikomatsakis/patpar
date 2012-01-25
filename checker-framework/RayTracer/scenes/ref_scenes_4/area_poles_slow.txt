@@ -1,0 +1,58 @@
+scene:
+background-col=0.5 0.5 1
+ambient-light=1 1 1
+
+camera:
+eye= 0 1.5 2
+#eye = -1 1.7 1
+look-at = 0 0 0
+screen-dist = 1
+up-direction = 0 1 0
+
+
+rectangle:
+p0=-2 0 -2
+p1=-2 0 2
+p2=2 0 -2
+mtl-specular=0 0 0
+
+cylinder:
+start = -1 0 0
+radius = 0.15
+length=1.2
+direction=0 1 0
+
+cylinder:
+start = -0.1 0 0.3
+radius = 0.15
+length=1
+direction=0 1 0
+
+cylinder:
+start = 0.7 0 0.7
+radius = 0.15
+length=0.9
+direction=0 1 0
+
+cylinder:
+start = -0.5 0 -1.5
+radius = 0.15
+length=3
+direction=0 1 0
+
+
+light-directed:
+direction=2 -2 -2
+color=0.3 0.3 0.7
+
+light-point:
+pos=2 3 0
+color=0.3 0.7 0.3
+
+
+light-area:
+p0= -1.5 4 -2
+p1= -1 4.3 -2
+p2= -1.5 4 -2.5
+grid-width=8
+color = 0.7 0.3 0.3
