@@ -1,46 +1,36 @@
 package patpar;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
 
+import checkers.javari.quals.ReadOnly;
+
 public class Task<T> {
-	private final ForkJoinPool fjp;
-	private final Task<?> parent;
 	private final Closure<T> closure;
+	private final Task<?> parent;
 	private Future<T> future;
-	private final List<Task<?>> children = new ArrayList<>();
-	private boolean completed;
+	private boolean completed = false;
 	
-	public Task(ForkJoinPool fjp, Task<?> parent, Closure<T> closure) {
+	public Task(Task<?> parent, Closure<T> closure) {
 		super();
-		this.fjp = fjp;
 		this.parent = parent;
 		this.closure = closure;
-		completed = false;
 	}
 	
-	<C> Task<C> fork(Closure<C> b) {
-		Task<C> child = new Task<>(fjp, this, b);
-		children.add(child);
-		return child;
-	}
-
-	void enqueue() {
+	void enqueue(final ForkJoinPool fjp) {
 		this.future = fjp.submit(new RecursiveTask<T>() {
-			private static final long serialVersionUID = 7420151722469283929L;
-			@Override
-			protected T compute() {
-				final Task<?> t = PatPar.pushTask(Task.this);
-				try {
-					return closure.compute();
-				} finally {
-					completed = true;
-					PatPar.popTask(t);
-				}
+			@Override protected T compute() {
+				return new Finish(fjp, Task.this).run(new FinishBody<T>() {
+					@Override public T run() {
+						try {
+							return closure.compute();
+						} finally {
+							completed = true;
+						}
+					}
+				});
 			}
 		});
 	}
@@ -52,33 +42,46 @@ public class Task<T> {
 		}
 		return t;
 	}
-	
-	void sync() {
-		for (Task<?> child : children) {
-			child.enqueue();
-		}
 
-		for (Task<?> child : children) {
-			child.join();
-		}
-	}		
-	
+	/** 
+	 * Return result of this task. 
+	 * 
+	 * Can only be invoked from the parent or from some ancestor of the parent. */ 
 	public T get() {
-		if (this.future == null) {
-			if (PatPar.getTask() == parent)
-				throw new RuntimeException("get() before execute");
-			return null;
-		} else {
-			try {
-				return this.future.get();
-			} catch (InterruptedException | ExecutionException e) {
-				throw new RuntimeException(e);
-			}
+		// FIXME-- this check should not be necessary, because Task method is
+		// not readonly.  Have to fix up a bug or two in the type checker (for example,
+		// making sure to convert type parameters to @ReadOnly in views and so forth)
+		// to make this really work.
+		if (Finish.currentTask() == parent) {
+			return getFromParent();
 		}
+		throw new PatParException("cannot call get() except from parent");
+	}
+
+	/** 
+	 * Return result of this task, joining as needed.
+	 * 
+	 * Can be invoked safely from children. */ 
+	public @ReadOnly T join() /*@ReadOnly*/ {
+		Task<?> task = Finish.currentTask();
+		if (task == parent)
+			return getFromParent();
+		return getFuture();
+	}
+
+	private T getFromParent() {
+		if (completed) {
+			return getFuture();
+		}
+		throw new PatParException("cannot call get() until task is finished");
 	}
 	
-	T join() {
-		return get();
+	T getFuture() {
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	boolean isChildOf(Task<?> o) {
@@ -87,9 +90,5 @@ public class Task<T> {
 				return true;
 		}
 		return false;
-	}
-
-	int guessHowManyTasksToMake() {
-		return fjp.getParallelism() * 2;
 	}
 }

@@ -231,19 +231,21 @@ public class RayTracer {
 		viewplaneUp = camera.getViewplaneUp();
 		direction = camera.getDirection();
 									
-		IntArray result = new IntArray(w * h);
-		result.divideC(new Closure1<View<CRange,Integer>, Void>() {
-			protected Void compute(View<CRange, Integer> view) {
-				CRange range = view.range;
-				for (int i = range.min; i < range.max; i++) {
-					int y = i / w;
-					int x = i - y * w;
-					int cc = RayTracer.this.compute(y, x);
-					view.set(x + y * w, cc);
+		final IntArray result = new IntArray(w * h);
+		PatPar.finish(new Runnable() { public void run() {
+			result.divideC(new Closure1<View<CRange,Integer>, Void>() {
+				protected Void compute(View<CRange, Integer> view) {
+					CRange range = view.range;
+					for (int i = range.min; i < range.max; i++) {
+						int y = i / w;
+						int x = i - y * w;
+						int cc = RayTracer.this.compute(y, x);
+						view.set(x + y * w, cc);
+					}
+					return null;
 				}
-				return null;
-			}
-		});
+			});
+		}});
 		
 		return result.toArray();
 	}
@@ -295,7 +297,7 @@ public class RayTracer {
 		ImageIO.write(bi, format, new File(filename+"."+format));
 	}
 
-	void runMain(String args[]) throws Exception
+	void runMain(@ReadOnly String /*@ReadOnly*/ [] args) throws Exception
 	{
 		for (String fileName : args) {
 			int height = 480;

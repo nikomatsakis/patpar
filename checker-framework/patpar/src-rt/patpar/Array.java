@@ -7,14 +7,20 @@ abstract class Array<T> {
 	private boolean divided;
 
 	Array() {
-		divided = false;
 	}
 	
 	void updateOwner() {
-		owner = PatPar.getTask();
+		owner = Finish.currentTask();
 	}
 	
 	protected void checkAccess(boolean isWrite) /*@ReadOnly*/ {
+		if (divided) {
+			throw new PatParException("Cannot access divided array except through view");
+		}
+		
+		// Strictly speaking, these checks are not needed.
+		// Type system ought to enforce it.
+		
 		Task<?> o = owner.update();
 		if (o != owner) {
 			// Old owner may have died.  In that case, we are now 
@@ -28,21 +34,15 @@ abstract class Array<T> {
 			// between this reader and later readers that might see
 			// these writes.
 			owner = o;       // technically violates @ReadOnly but it's ok.
-			divided = false; // technically violates @ReadOnly but it's ok.
 		}
 		
-		Task<?> c = PatPar.getTask();
+		Task<?> c = Finish.currentTask();
 		if (o == c) { // The owner can always access.
 			return;
 		}
 		
 		// Not the owner.  Must be a child of the owner.
 		assert c.isChildOf(o);
-		
-		// If we were divided, children can only access through the view:
-		if (divided) {
-			throw new PatParException("Cannot access divided array except through view");
-		}
 		
 		// If we were not divided, children should have only @ReadOnly pointers, which
 		// would prevent them from writing to us.  But just in case, we do a check here.
@@ -69,10 +69,12 @@ abstract class Array<T> {
 	abstract Range range();
 	
 	final <R extends Range> void divide(
+			final Finish fin,
 			final Closure1<View<R, T>, Void> cl,
-			List<? extends R> ranges) {
+			final List<? extends R> ranges) {
 		checkAccess(true);
 		divided = true;
+		fin.addDividedArray(this);
 		for (R range : ranges) {
 			final View<R, T> view = new View<>(this, range);
 			PatPar.fork(new Closure<Void>() {
@@ -84,15 +86,13 @@ abstract class Array<T> {
 				}
 			});
 		}
-		PatPar.sync();
-		divided = false;
 	}
 	
 	public final void divideC(final Closure1<View<CRange, T>, Void> cl) {
-		Task<?> task = PatPar.getTask();
-		int par = task.guessHowManyTasksToMake();
+		Finish fin = Finish.current();
+		int par = fin.guessHowManyTasksToMake();
 		List<CRange> ranges = range().divideC(par);
-		divide(cl, ranges);
+		divide(fin, cl, ranges);
 	}
 	
 	<U> void mapInto(
@@ -109,5 +109,9 @@ abstract class Array<T> {
 				return null;
 			}
 		});
+	}
+
+	void undivide() {
+		divided = false;
 	}
 }

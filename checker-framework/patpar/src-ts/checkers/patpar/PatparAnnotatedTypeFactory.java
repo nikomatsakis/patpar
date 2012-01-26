@@ -250,6 +250,10 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
 		if (innermostClosureScope == null || element == innermostClosureScope)
 			return dtype0;
 		
+		// This happens in static methods and the like.
+		if (dtype0 == null)
+			return null;
+		
 		AnnotatedDeclaredType dtype = AnnotatedTypes.deepCopy(dtype0);
 		new MakeReadOnly().visit(dtype);
 		return dtype;

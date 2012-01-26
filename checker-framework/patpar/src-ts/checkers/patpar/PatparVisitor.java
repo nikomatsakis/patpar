@@ -154,6 +154,7 @@ public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 				|| TreeUtils.isConstructor(visitorState.getMethodTree());
 
 		if (variableLocalField && !inConstructor) {
+			// POTENTIAL JAVARI BUG (Javari code always used getSelfType() here)
 			AnnotatedTypeMirror rcvr = atypeFactory.getReceiver(expTree);
 			if (!rcvr.hasEffectiveAnnotation(MUTABLE)) {
 				checker.report(Result.failure("ro.field"), expTree);
