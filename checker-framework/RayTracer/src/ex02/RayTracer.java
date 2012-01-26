@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import checkers.javari.quals.ReadOnly;
+
 import patpar.CRange;
 import patpar.Closure;
 import patpar.Closure1;
@@ -21,7 +23,6 @@ import ex02.entities.Scene;
 import ex02.entities.Surface;
 import ex02.entities.lights.Light;
 import ex02.entities.primitives.Primitive;
-
 
 public class RayTracer {		
 	public final double EPSILON = 0.00000001F;
@@ -62,7 +63,7 @@ public class RayTracer {
 		});
 	}	
 	
-	public Ray constructRayThroughPixel(int x, int y, double sampleXOffset, double sampleYOffset) {
+	public Ray constructRayThroughPixel(int x, int y, double sampleXOffset, double sampleYOffset) /*@ReadOnly*/ {
 		Ray ray = new Ray(eye, direction, screenDist);
 		double[] endPoint = ray.getEndPoint();		
 		
@@ -78,7 +79,7 @@ public class RayTracer {
 	}
 	
 	// Finds an intersecting primitive. Will ignore the one specificed by ignorePrimitive
-	public Intersection findIntersection(Ray ray, Primitive ignorePrimitive)
+	public Intersection findIntersection(Ray ray, Primitive ignorePrimitive) /*@ReadOnly*/ 
 	{
 		// Start off with infinite distance and no intersecting primitive
 		double minDistance = Double.POSITIVE_INFINITY;
@@ -102,7 +103,7 @@ public class RayTracer {
 		return new Intersection(minDistance, minPrimitive);
 	}
 	
-	public double[] getColor(Ray ray, Intersection intersection, int recursionDepth) {
+	public double[] getColor(Ray ray, Intersection intersection, int recursionDepth) /*@ReadOnly*/ {
 		// Avoid infinite loops and help performance by limiting the recursion depth
 		if (recursionDepth > MAX_REFLECTION_RECURSION_DEPTH) 
 			return new double [] { 0, 0, 0 };
@@ -231,8 +232,8 @@ public class RayTracer {
 		direction = camera.getDirection();
 									
 		IntArray result = new IntArray(w * h);
-		result.divideC(new Closure1<View<CRange,Integer>>() {
-			protected void compute(View<CRange, Integer> view) {
+		result.divideC(new Closure1<View<CRange,Integer>, Void>() {
+			protected Void compute(View<CRange, Integer> view) {
 				CRange range = view.range;
 				for (int i = range.min; i < range.max; i++) {
 					int y = i / w;
@@ -240,15 +241,16 @@ public class RayTracer {
 					int cc = RayTracer.this.compute(y, x);
 					view.set(x + y * w, cc);
 				}
+				return null;
 			}
 		});
 		
 		return result.toArray();
 	}
 
-	private int compute(int y, int x) {
+	private int compute(int y, int x) /*@ReadOnly*/ {
 		int hits = 0;
-		double[] color = new double[3];								
+		double[] color = new double[3];
 		
 		// Supersampling loops
 		for (int k = 0; k < superSampleWidth; k++) {															

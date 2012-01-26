@@ -3,9 +3,11 @@ package ex02.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import checkers.javari.quals.ReadOnly;
 import ex02.Parser;
-import ex02.Utils;
 import ex02.Parser.ParseException;
+import ex02.Utils;
 import ex02.entities.lights.Light;
 import ex02.entities.primitives.Primitive;
 
@@ -37,7 +39,7 @@ public class Scene implements IEntity {
 	}
 	
 	// Returns the color of the background (or texture) at the given coordinates
-	public double[] getBackgroundAt(int x, int y) {
+	public @ReadOnly double[] getBackgroundAt(int x, int y) /*@ReadOnly*/ {
 		if (backgroundTexture != null) {
 			int textureX = (int)Math.round((double)x / canvasWidth * textureWidth); 
 			int textureY = (int)Math.round((double)y / canvasHeight * textureHeight);
@@ -90,26 +92,26 @@ public class Scene implements IEntity {
 		
 	///////////////////////////  Getters & Setters  ///////////////////////////////
 	
-	public List<Primitive> getPrimitives() {
+	public @ReadOnly List<Primitive> getPrimitives() /*@ReadOnly*/ {
 		return primitives;
 	}
 	public void setPrimitives(List<Primitive> listOfPrimitives) {
 		this.primitives = listOfPrimitives;
 	}
-	public double[] getBackgroundColor() {
+	public double[] getBackgroundColor() /*@ReadOnly*/ {
 		return backgroundColor;
 	}
 	public void setBackgroundColor(double[] backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
-	public double[] getAmbientLight() {
+	public double[] getAmbientLight() /*@ReadOnly*/ {
 		return ambientLight;
 	}
 	public void setAmbientLight(double[] ambientLight) {
 		this.ambientLight = ambientLight;
 	}
 	
-	public int getSuperSampleWidth() {
+	public int getSuperSampleWidth() /*@ReadOnly*/ {
 		return superSampleWidth;
 	}
 	public void setSuperSampleWidth(int superSampleWidth) {
@@ -128,7 +130,7 @@ public class Scene implements IEntity {
 		if ("super-samp-width".equals(name)) superSampleWidth = Integer.parseInt(args[0]);			
 	}
 
-	public List<Light> getLights() {
+	public List<Light> getLights() /*@ReadOnly*/ {
 		return lights;
 	}
 
@@ -136,7 +138,7 @@ public class Scene implements IEntity {
 		this.lights = lights;
 	}
 
-	public Camera getCamera() {
+	public Camera getCamera() /*@ReadOnly*/ {
 		return camera;
 	}
 
@@ -144,7 +146,7 @@ public class Scene implements IEntity {
 		this.camera = camera;
 	}
 
-	public int getCanvasHeight() {
+	public int getCanvasHeight() /*@ReadOnly*/ {
 		return canvasHeight;
 	}
 
@@ -152,7 +154,7 @@ public class Scene implements IEntity {
 		this.canvasHeight = height;
 	}
 
-	public int getCanvasWidth() {
+	public int getCanvasWidth() /*@ReadOnly*/ {
 		return canvasWidth;
 	}
 

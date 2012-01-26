@@ -1,6 +1,6 @@
 package ex02.blas;
 
-import ex02.Parser.ParseException;
+import checkers.javari.quals.*;
 
 // Static mathematical utility class for linear algebra and other things
 public class MathUtils {
@@ -16,14 +16,14 @@ public class MathUtils {
 	}
 	
 	// Vector addition, adds addition to vec
-	public static void addVector(double[] vec, double addition[]) {
+	public static void addVector(double[] vec, double /*@ReadOnly*/ [] addition) {
 		vec[0] += addition[0]; 
 		vec[1] += addition[1];
 		vec[2] += addition[2];
 	}
 	
 	// Multiplies addition by a scalar and then adds the result to vec
-	public static void addVectorAndMultiply(double[] vec, double addition[], double scalar) {
+	public static void addVectorAndMultiply(double[] vec, double/*@ReadOnly*/[] addition, double scalar) {
 		vec[0] += addition[0] * scalar; 
 		vec[1] += addition[1] * scalar;
 		vec[2] += addition[2] * scalar;
@@ -43,7 +43,7 @@ public class MathUtils {
 	 * @param vec2
 	 * @return
 	 */
-	public static double dotProduct(double[] vec1, double[] vec2) {
+	public static double dotProduct(double/*@ReadOnly*/[] vec1, double/*@ReadOnly*/[] vec2) {
 		return vec1[0] * vec2[0]  +  vec1[1] * vec2[1]  +  vec1[2] * vec2[2] ;
 	}	
 	
@@ -53,12 +53,12 @@ public class MathUtils {
 	 * @param p2
 	 * @return
 	 */
-	public static double[] calcPointsDiff(double[] p1, double[] p2) {
+	public static double[] calcPointsDiff(double/*@ReadOnly*/[] p1, double/*@ReadOnly*/[] p2) {
 		return new double [] { p2[0] - p1[0] , p2[1] - p1[1] , p2[2] - p1[2] };
 	}
 
 	// Returns the norm of the difference between this vector's position point and another point
-	public static double norm(double[] p) {					
+	public static double norm(double/*@ReadOnly*/[] p) {					
 		return Math.sqrt(sqr(p[0]) + sqr(p[1]) + sqr(p[2]));
 	}
 
@@ -75,14 +75,14 @@ public class MathUtils {
 	}
 
 	// Returns the cross product of 2 vectors
-	public static double[] crossProduct(double[] d1, double[] d2) {				
+	public static double[] crossProduct(double/*@ReadOnly*/[] d1, double/*@ReadOnly*/[] d2) {				
 		double[] result = { (d1[1] * d2[2]) - (d1[2] * d2[1]), (d1[2] * d2[0]) - (d1[0] * d2[2]), (d1[0] * d2[1]) - (d1[1] * d2[0]) };
 		
 		return result;  		
 	}	
 	
 	// Reflects a vector around a normal vector. both vectors are assumed to have the same shift from the origin
-	public static double[] reflectVector(double[] vec, double[] normal) {
+	public static double[] reflectVector(double/*@ReadOnly*/[] vec, double/*@ReadOnly*/[] normal) {
 		double dotProduct = MathUtils.dotProduct(vec, normal);
 		
 		double[] r = new double[] { -vec[0] + 2 * normal[0] * dotProduct,
@@ -93,7 +93,7 @@ public class MathUtils {
 	}
 	
 	// Returns the vector opposite to vec
-	public static double[] oppositeVector(double[] vec) {				
+	public static double[] oppositeVector(double/*@ReadOnly*/[] vec) {				
 		double[] r = new double[] { -vec[0], -vec[1], -vec[2] };
 						
 		return r;
@@ -106,7 +106,10 @@ public class MathUtils {
 	 * @param p2
 	 * @return
 	 */
-	public static boolean arePointsCollinear(double[] p0, double[] p1, double[] p2) {
+	public static boolean arePointsCollinear(
+			double/*@ReadOnly*/[] p0,
+			double/*@ReadOnly*/[] p1, 
+			double/*@ReadOnly*/[] p2) {
 
 		// coefficients for testing collinearity
 		double a,b,c;

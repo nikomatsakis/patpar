@@ -22,6 +22,12 @@ public class IntArray extends Array<Integer> {
 	Range range() {
 		return new CRange(0, data.length);
 	}
+	
+	public IntArray map(Closure1<Integer,Integer> cl) {
+		IntArray result = new IntArray(data.length);
+		mapInto(new IntArray(data.length), cl);
+		return result;
+	}
 
 	/** Returns a copy of the internal array */
 	public int[] toArray() {

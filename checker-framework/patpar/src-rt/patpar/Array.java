@@ -69,7 +69,7 @@ abstract class Array<T> {
 	abstract Range range();
 	
 	final <R extends Range> void divide(
-			final Closure1<View<R, T>> cl,
+			final Closure1<View<R, T>, Void> cl,
 			List<? extends R> ranges) {
 		checkAccess(true);
 		divided = true;
@@ -88,10 +88,26 @@ abstract class Array<T> {
 		divided = false;
 	}
 	
-	public final void divideC(final Closure1<View<CRange, T>> cl) {
+	public final void divideC(final Closure1<View<CRange, T>, Void> cl) {
 		Task<?> task = PatPar.getTask();
 		int par = task.guessHowManyTasksToMake();
 		List<CRange> ranges = range().divideC(par);
 		divide(cl, ranges);
+	}
+	
+	<U> void mapInto(
+			final Array<U> newArray, 
+			final Closure1<T, U> cl) {
+		newArray.divideC(new Closure1<View<CRange,U>, Void>() {
+			@Override
+			protected Void compute(View<CRange, U> view) {
+				CRange range = view.range;
+				for (int i = range.min; i < range.max; i++) {
+					U u = cl.compute(Array.this.get(i));
+					view.set(i, u);
+				}
+				return null;
+			}
+		});
 	}
 }

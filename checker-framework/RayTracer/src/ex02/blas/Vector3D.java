@@ -1,5 +1,7 @@
 package ex02.blas;
 
+import checkers.javari.quals.ReadOnly;
+
 // Vector class for vectors having a position, direction and magnitude properties
 public class Vector3D {
 	double[] position;
@@ -11,7 +13,10 @@ public class Vector3D {
 	}
 	
 	// Constructor
-	public Vector3D(double[] position, double[] direction, double magnitude) {
+	public Vector3D(
+			double /*@ReadOnly*/ [] position, 
+			double /*@ReadOnly*/ [] direction,
+			double magnitude) {
 		assert position.length == 3;
 		assert direction.length == 3;
 		this.position = position.clone();
