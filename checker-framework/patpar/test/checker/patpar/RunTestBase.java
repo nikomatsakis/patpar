@@ -39,6 +39,8 @@ public class RunTestBase {
 		this.sourceDir = sourceDir;
 		this.javaFile = javaFile;
 		this.cp = cp;
+		
+		System.err.printf("RunTestBase javaFile=%s sourceDir=%s\n", sourceDir, javaFile);
 	}
 
 	public void test() throws IOException {
@@ -51,13 +53,14 @@ public class RunTestBase {
 		CompilationTask task = comp.getTask(null, fileManager, diag, options, null, compUnits);
 		boolean success = task.call().booleanValue();
 		List<ErrorTemplate> errors = errorTemplates(compUnits);
+//		System.err.printf("options=%s errors=%d diags=%d\n", options, errors.size(), diag.getDiagnostics().size());
 		compareErrors(success, errors, diag);
 	}
 
 	private void compareErrors(boolean success, List<ErrorTemplate> errors, DiagnosticCollector<JavaFileObject> diag) {
 		List<String> failures = new ArrayList<String>();
 
-		boolean expectedSuccess = errors.size() == 0;
+		boolean expectedSuccess = (errors.size() == 0);
 		if (expectedSuccess != success) {
 			failures.add(String.format("Expected success %s but got %s", expectedSuccess, success));
 		}
@@ -155,6 +158,7 @@ public class RunTestBase {
 		options.add(sourceDir.getAbsolutePath());
 		options.add("-processor");
 		options.add(PatparChecker.class.getName());
+//		options.add(JavariChecker.class.getName());
 		options.add("-implicit:none");
 	}
 }

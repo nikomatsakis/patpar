@@ -14,6 +14,7 @@ import checkers.javari.quals.QReadOnly;
 import checkers.javari.quals.ReadOnly;
 import checkers.javari.quals.ThisMutable;
 import checkers.quals.TypeQualifiers;
+import checkers.source.Result;
 import checkers.types.AnnotatedTypeFactory;
 import checkers.types.AnnotatedTypeMirror;
 import checkers.types.AnnotatedTypeMirror.AnnotatedDeclaredType;
@@ -98,6 +99,12 @@ public class PatparChecker extends BaseTypeChecker {
 	@Override
 	public PatparAnnotatedTypeFactory createFactory(CompilationUnitTree root) {
 		return new PatparAnnotatedTypeFactory(this, root);
+	}
+
+	@Override
+	public void report(Result r, Object src) {
+		System.err.printf("r=%s src=%s\n", r, src);
+		super.report(r, src);
 	}
 
     

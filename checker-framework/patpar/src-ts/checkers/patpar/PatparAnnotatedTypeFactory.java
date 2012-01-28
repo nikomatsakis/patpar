@@ -227,6 +227,13 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
 
     private void annotatePotentialClosureUpvar(Tree tree, Element elt,
 			AnnotatedTypeMirror type) {
+    	switch (tree.getKind()) {
+    	case IDENTIFIER:
+    		break;
+    	default:
+    		return;
+    	}
+    	
     	switch (elt.getKind()) {
     	case LOCAL_VARIABLE:
     	case PARAMETER:
