@@ -8,12 +8,12 @@ import java.util.concurrent.RecursiveTask;
 import checkers.javari.quals.ReadOnly;
 
 public class Task<T> {
-	private final Closure<T> closure;
+	private final ParTask<T> closure;
 	private final Task<?> parent;
 	private Future<T> future;
 	private boolean completed = false;
 	
-	public Task(Task<?> parent, Closure<T> closure) {
+	public Task(Task<?> parent, ParTask<T> closure) {
 		super();
 		this.parent = parent;
 		this.closure = closure;

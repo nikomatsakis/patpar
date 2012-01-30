@@ -3,7 +3,7 @@ package checker.patpar;
 import java.util.List;
 
 import patpar.CRange;
-import patpar.Closure1;
+import patpar.ParClosure;
 import patpar.View;
 
 public class Closure1HasReadOnlyUpvars {
@@ -11,7 +11,7 @@ public class Closure1HasReadOnlyUpvars {
 	List<String> fld;
 
 	public void foo(final List<String> lst) {
-		new Closure1<View<CRange,Void>, Void>() {
+		new ParClosure<View<CRange,Void>, Void>() {
 			@Override
 			protected Void compute(View<CRange,Void> v) {
 				CRange r = v.range;

@@ -1,8 +1,8 @@
 package checker.patpar;
 
-import patpar.Closure;
+import patpar.ParTask;
 
-public class ClosureWithFields extends Closure<Void> {
+public class ClosureWithFields extends ParTask<Void> {
 	
 	int field; // ERROR Closure objects cannot have fields
 

@@ -24,7 +24,7 @@ public class ObjArray<T> extends Array<T> {
 		return new CRange(0, data.length);
 	}
 	
-	public <U> ObjArray<U> map(Closure1<T,U> cl) {
+	public <U> ObjArray<U> map(ParClosure<T,U> cl) {
 		ObjArray<U> result = new ObjArray<>(data.length);
 		mapInto(result, cl);
 		return result;

@@ -12,8 +12,8 @@ import java.util.Date;
 
 import patpar.Array;
 import patpar.CRange;
-import patpar.Closure;
-import patpar.Closure1;
+import patpar.ParTask;
+import patpar.ParClosure;
 import patpar.FloatArray;
 import patpar.ObjArray;
 import patpar.PatPar;
@@ -164,7 +164,7 @@ public class Sor {
 			for (int i = 0; i < iterations; i += 1) {
 				PatPar.finish(new Runnable() {
 					public void run() {
-						black.divideC(N+1, new Closure1<View<CRange,Float>, Void>() {
+						black.divideC(N+1, new ParClosure<View<CRange,Float>, Void>() {
 							protected Void compute(
 									View<CRange, Float> black) {
 								blackFromRed(black, red, black.range.min, black.range.max);
@@ -176,7 +176,7 @@ public class Sor {
 				
 				PatPar.finish(new Runnable() {
 					public void run() {
-						red.divideC(N+1, new Closure1<View<CRange,Float>, Void>() {
+						red.divideC(N+1, new ParClosure<View<CRange,Float>, Void>() {
 							protected Void compute(
 									View<CRange, Float> red) {
 								redFromBlack(red, black, red.range.min, red.range.max);
@@ -215,7 +215,7 @@ public class Sor {
 	}
 	
 	public static void main(final String args[]) {
-		PatPar.root(new Closure<Void>() {
+		PatPar.root(new ParTask<Void>() {
 			protected Void compute() {
 				main1(args);
 				return null;

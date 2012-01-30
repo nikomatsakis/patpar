@@ -32,7 +32,7 @@ class Finish {
 		return f.parent;
 	}
 
-	<C> Task<C> fork(Closure<C> b) {
+	<C> Task<C> fork(ParTask<C> b) {
 		Task<C> child = new Task<>(parent, b);
 		children.add(child);
 		return child;

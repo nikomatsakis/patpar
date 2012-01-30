@@ -70,14 +70,14 @@ public abstract class Array<T> {
 	
 	final <R extends Range> void divide(
 			final Finish fin,
-			final Closure1<View<R, T>, Void> cl,
+			final ParClosure<View<R, T>, Void> cl,
 			final List<? extends R> ranges) {
 		checkAccess(true);
 		divided = true;
 		fin.addDividedArray(this);
 		for (R range : ranges) {
 			final View<R, T> view = new View<>(this, range);
-			PatPar.fork(new Closure<Void>() {
+			PatPar.fork(new ParTask<Void>() {
 				@Override
 				protected Void compute() {
 					view.updateOwner();
@@ -88,7 +88,7 @@ public abstract class Array<T> {
 		}
 	}
 	
-	public final void divideC(int chunk, final Closure1<View<CRange, T>, Void> cl) {
+	public final void divideC(int chunk, final ParClosure<View<CRange, T>, Void> cl) {
 		Finish fin = Finish.current();
 		int par = fin.guessHowManyTasksToMake();
 		List<CRange> ranges = range().divideC(chunk, par);
@@ -97,8 +97,8 @@ public abstract class Array<T> {
 	
 	<U> void mapInto(
 			final Array<U> newArray, 
-			final Closure1<T, U> cl) {
-		newArray.divideC(1, new Closure1<View<CRange,U>, Void>() {
+			final ParClosure<T, U> cl) {
+		newArray.divideC(1, new ParClosure<View<CRange,U>, Void>() {
 			@Override
 			protected Void compute(View<CRange, U> view) {
 				CRange range = view.range;

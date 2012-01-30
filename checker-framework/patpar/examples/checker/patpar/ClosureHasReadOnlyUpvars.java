@@ -2,14 +2,14 @@ package checker.patpar;
 
 import java.util.List;
 
-import patpar.Closure1;
+import patpar.ParClosure;
 
 public class ClosureHasReadOnlyUpvars {
 	
 	List<String> fld;
 
 	public void foo(final List<String> lst) {
-		new Closure1<Void, Void>() {
+		new ParClosure<Void, Void>() {
 			@Override
 			protected Void compute(Void v) {
 				fld = null; // ERROR a field of a ReadOnly object is not assignable

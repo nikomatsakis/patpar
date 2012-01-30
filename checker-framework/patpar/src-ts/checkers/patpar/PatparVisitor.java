@@ -11,8 +11,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
-import patpar.Closure;
-import patpar.Closure1;
+import patpar.ParTask;
+import patpar.ParClosure;
 import checkers.basetype.BaseTypeVisitor;
 import checkers.javari.quals.Assignable;
 import checkers.source.Result;
@@ -39,7 +39,7 @@ import com.sun.source.tree.VariableTree;
 public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 
 	final private AnnotationMirror READONLY, MUTABLE, POLYREAD, QREADONLY;
-	List<TypeElement> closureElts;
+	TypeElement parClosureElt;
 	PatparAnnotatedTypeFactory atypeFactory;
 	Stack<Boolean> classElts = new Stack<>();
 	
@@ -60,12 +60,7 @@ public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 		QREADONLY = checker.QREADONLY;
 //		checkForAnnotatedJdk();
 		
-		closureElts = new ArrayList<>();
-		for (Class<?> cls : Arrays.asList(Closure.class, Closure1.class)) {
-			TypeElement elt = checker.getProcessingEnvironment().getElementUtils().getTypeElement(cls.getName());
-			closureElts.add(elt);
-		}
-		
+		parClosureElt = checker.getProcessingEnvironment().getElementUtils().getTypeElement(ParClosure.class.getName());
 		atypeFactory = (PatparAnnotatedTypeFactory) super.atypeFactory;
 	}
 
@@ -111,11 +106,7 @@ public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 	}
 
 	private boolean isClosureTypeElt(TypeElement typeElt) {
-		for (TypeElement closureElt : closureElts) {
-			if (atypeFactory.isSubtype(typeElt, closureElt))
-				return true;
-		}
-		return false;
+		return atypeFactory.isSubtype(typeElt, parClosureElt);
 	}
 
 	@Override

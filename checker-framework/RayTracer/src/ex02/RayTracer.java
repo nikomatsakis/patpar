@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 import checkers.javari.quals.ReadOnly;
 
 import patpar.CRange;
-import patpar.Closure;
-import patpar.Closure1;
+import patpar.ParTask;
+import patpar.ParClosure;
 import patpar.IntArray;
 import patpar.PatPar;
 import patpar.View;
@@ -49,7 +49,7 @@ public class RayTracer {
 	
 	public static void main(final String[] args) throws Exception 
 	{
-		PatPar.root(new Closure<Void>() {
+		PatPar.root(new ParTask<Void>() {
 			@Override
 			protected Void compute() {
 				try {
@@ -233,7 +233,7 @@ public class RayTracer {
 									
 		final IntArray result = new IntArray(w * h);
 		PatPar.finish(new Runnable() { public void run() {
-			result.divideC(1, new Closure1<View<CRange,Integer>, Void>() {
+			result.divideC(1, new ParClosure<View<CRange,Integer>, Void>() {
 				protected Void compute(View<CRange, Integer> view) {
 					CRange range = view.range;
 					for (int i = range.min; i < range.max; i++) {

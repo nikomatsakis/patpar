@@ -5,7 +5,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class PatPar {
-	public static <T> T root(final Closure<T> b) {
+	public static <T> T root(final ParTask<T> b) {
 		final ForkJoinPool fjp = new ForkJoinPool();
 		try {
 			return fjp.submit(new RecursiveTask<T>() {
@@ -22,7 +22,7 @@ public class PatPar {
 		}
 	}
 	
-	public static <T> Task<T> fork(Closure<T> b) {
+	public static <T> Task<T> fork(ParTask<T> b) {
 		Finish f = Finish.current();
 		if (f == null)
 			throw new PatParException("Use root() method for the root task");

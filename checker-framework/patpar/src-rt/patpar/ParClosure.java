@@ -1,5 +1,5 @@
 package patpar;
 
-public abstract class Closure1<A,R> {
+public abstract class ParClosure<A,R> {
 	protected abstract R compute(A argument); 
 }

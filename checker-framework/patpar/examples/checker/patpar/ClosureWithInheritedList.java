@@ -3,7 +3,7 @@ package checker.patpar;
 import java.util.ArrayList;
 import java.util.List;
 
-import patpar.Closure;
+import patpar.ParTask;
 import patpar.PatPar;
 import checkers.javari.quals.ReadOnly;
 
@@ -14,7 +14,7 @@ public class ClosureWithInheritedList {
 	}
 
 	public void main(final List<Data> parentList) {
-		PatPar.fork(new Closure<Void>() {
+		PatPar.fork(new ParTask<Void>() {
 			@Override
 			protected Void compute() {
 				parentList.set(0, null);    // ERROR call to set(int,E) not allowed on the given receiver*
