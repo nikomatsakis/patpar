@@ -223,6 +223,10 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
                     new AnnotatedTypeReplacer(THISMUTABLE, MUTABLE).visit(type);
             }
         }
+        
+        if (tree instanceof ExpressionTree && TreeUtils.isSelfAccess((ExpressionTree) tree)) {
+        	System.err.printf("element=%s type=%s\n", elt, type);
+        }
     }
 
     private void annotatePotentialClosureUpvar(Tree tree, Element elt,
@@ -248,7 +252,7 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
 			return;
     	}
     	
-        new MakeReadOnly().visit(type);
+    	makeReadOnly(type);
 	}
 
 	@Override
@@ -262,7 +266,7 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
 			return null;
 		
 		AnnotatedDeclaredType dtype = AnnotatedTypes.deepCopy(dtype0);
-		new MakeReadOnly().visit(dtype);
+    	makeReadOnly(dtype);
 		return dtype;
 	}
 
@@ -314,6 +318,10 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
                 type.addAnnotation(MUTABLE);
         }
         typePost.visit(type, element.getKind());
+        
+        if (element.getKind() == ElementKind.METHOD) {
+        	System.err.printf("element=%s type=%s\n", element, type);
+        }
     }
 
     @Override
@@ -804,17 +812,16 @@ public class PatparAnnotatedTypeFactory extends AnnotatedTypeFactory {
         }
     }
     
-    private class MakeReadOnly extends SimpleAnnotatedTypeScanner<Void, Void> {
-        @Override
-        protected Void defaultAction(AnnotatedTypeMirror type, Void p) {
-        	switch (type.getKind()) {
-        	case ARRAY:
-        	case DECLARED:
-                type.clearAnnotations();
-                type.addAnnotation(READONLY);
-        		break;
-        	}
-            return super.defaultAction(type, p);
-        }
+    private void makeReadOnly(AnnotatedTypeMirror type) {
+    	switch(type.getKind()) {
+    	case ARRAY:
+    	case DECLARED:
+    	case TYPEVAR:
+            type.clearAnnotations();
+            type.addAnnotation(READONLY);
+    		break;
+    	default:
+    		return;
+    	}
     }
 }

@@ -58,7 +58,7 @@ public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 		MUTABLE = checker.MUTABLE;
 		POLYREAD = checker.POLYREAD;
 		QREADONLY = checker.QREADONLY;
-		checkForAnnotatedJdk();
+//		checkForAnnotatedJdk();
 		
 		closureElts = new ArrayList<>();
 		for (Class<?> cls : Arrays.asList(Closure.class, Closure1.class)) {
@@ -93,7 +93,12 @@ public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 
 	@Override
 	public Void visitVariable(VariableTree node, Void p) {
-		System.err.printf("Visiting variable %s\n", node.getName());
+		if (node.getName().toString().equals("l")) {
+			System.err.printf("foo\n");
+		}
+		System.err.printf("Visiting variable %s (%s)\n",
+				node.getName(),
+				atypeFactory.getAnnotatedType(node));
 		
 		Element elt = TreeUtils.elementFromDeclaration(node);
 		switch (elt.getKind()) {
@@ -152,10 +157,14 @@ public class PatparVisitor extends BaseTypeVisitor<PatparChecker> {
 		// visitState.getMethodTree() is null when in static initializer block
 		boolean inConstructor = visitorState.getMethodTree() == null
 				|| TreeUtils.isConstructor(visitorState.getMethodTree());
+		
+		System.err.printf("inConstructor=%s variableLocalField=%s",
+				inConstructor, variableLocalField);
 
 		if (variableLocalField && !inConstructor) {
 			// POTENTIAL JAVARI BUG (Javari code always used getSelfType() here)
 			AnnotatedTypeMirror rcvr = atypeFactory.getReceiver(expTree);
+			System.err.printf("rcvr=%s", rcvr);
 			if (!rcvr.hasEffectiveAnnotation(MUTABLE)) {
 				checker.report(Result.failure("ro.field"), expTree);
 			}

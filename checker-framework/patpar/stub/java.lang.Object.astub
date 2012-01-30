@@ -1,0 +1,16 @@
+package java.lang;
+
+class Object {
+    Object();
+    Class<?> getClass();
+    int hashCode();
+    boolean equals(Object arg0);
+    protected Object clone() throws CloneNotSupportedException;
+    String toString();
+    void notify();
+    void notifyAll();
+    void wait(long arg0) throws InterruptedException;
+    void wait(long arg0, int arg1) throws InterruptedException;
+    void wait() throws InterruptedException;
+    protected void finalize() throws Throwable;
+}

@@ -6,6 +6,7 @@ public class ObjArray<T> extends Array<T> {
 	@SuppressWarnings("unchecked")
 	public ObjArray(int size) {
 		data = (T[]) new Object[size];
+		updateOwner();
 	}
 	
 	@Override

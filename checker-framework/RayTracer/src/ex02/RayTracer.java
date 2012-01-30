@@ -233,7 +233,7 @@ public class RayTracer {
 									
 		final IntArray result = new IntArray(w * h);
 		PatPar.finish(new Runnable() { public void run() {
-			result.divideC(new Closure1<View<CRange,Integer>, Void>() {
+			result.divideC(1, new Closure1<View<CRange,Integer>, Void>() {
 				protected Void compute(View<CRange, Integer> view) {
 					CRange range = view.range;
 					for (int i = range.min; i < range.max; i++) {

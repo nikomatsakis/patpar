@@ -2,7 +2,7 @@ package patpar;
 
 import java.util.List;
 
-abstract class Array<T> {
+public abstract class Array<T> {
 	private Task<?> owner;
 	private boolean divided;
 
@@ -88,17 +88,17 @@ abstract class Array<T> {
 		}
 	}
 	
-	public final void divideC(final Closure1<View<CRange, T>, Void> cl) {
+	public final void divideC(int chunk, final Closure1<View<CRange, T>, Void> cl) {
 		Finish fin = Finish.current();
 		int par = fin.guessHowManyTasksToMake();
-		List<CRange> ranges = range().divideC(par);
+		List<CRange> ranges = range().divideC(chunk, par);
 		divide(fin, cl, ranges);
 	}
 	
 	<U> void mapInto(
 			final Array<U> newArray, 
 			final Closure1<T, U> cl) {
-		newArray.divideC(new Closure1<View<CRange,U>, Void>() {
+		newArray.divideC(1, new Closure1<View<CRange,U>, Void>() {
 			@Override
 			protected Void compute(View<CRange, U> view) {
 				CRange range = view.range;

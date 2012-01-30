@@ -1,0 +1,43 @@
+package java.util;
+
+import checkers.javari.quals.ReadOnly;
+import checkers.javari.quals.PolyRead;
+
+interface List<E> extends Collection<E> {
+    int size() @ReadOnly;
+    boolean isEmpty() @ReadOnly;
+    boolean contains(Object arg0) @ReadOnly;
+    Iterator<@PolyRead E> iterator() @PolyRead;
+    @PolyRead Object[] toArray() @PolyRead;
+    // <T> @PolyRead T[] toArray(@PolyRead T[] arg0) @PolyRead;
+    boolean add(E arg0);
+    boolean remove(Object arg0);
+    boolean containsAll(@ReadOnly Collection<?> arg0) @ReadOnly;
+    
+    // How to handle this?  It'd be nice to accept @ReadOnly but only if
+    // E is a readonly type.  I'm don't think this can be easily expressed!
+    //
+    // OK: E is @ReadOnly T, arg0 is a @ReadOnly Collection<T>
+    // OK: E is @ReadOnly T, arg0 is a Collection<@ReadOnly T>
+    //
+    // And so forth.
+    //
+    // In fact, is this even sound with no annotation?
+    boolean addAll(Collection<? extends E> arg0);
+    boolean addAll(int arg0, Collection<? extends E> arg1);
+    
+    boolean removeAll(Collection<?> arg0);
+    boolean retainAll(Collection<?> arg0);
+    void clear() @ReadOnly;
+    boolean equals(Object arg0) @ReadOnly;
+    int hashCode() @ReadOnly;
+    @PolyRead E get(int arg0) @PolyRead;
+    E set(int arg0, E arg1);
+    void add(int arg0, E arg1);
+    E remove(int arg0);
+    int indexOf(Object arg0) @ReadOnly;
+    int lastIndexOf(Object arg0);
+    ListIterator<@PolyRead E> listIterator() @PolyRead;
+    ListIterator<@PolyRead E> listIterator(int arg0);
+    List<@PolyRead E> subList(int arg0, int arg1) @PolyRead;
+}

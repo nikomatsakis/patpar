@@ -77,7 +77,12 @@ public class PatparChecker extends BaseTypeChecker {
      */
     @Override
     public boolean isSubtype(AnnotatedTypeMirror sub, AnnotatedTypeMirror sup) {
-        return sub.getKind().isPrimitive() || sup.getKind().isPrimitive() || super.isSubtype(sub, sup);
+    	if (sub.getKind().isPrimitive() || sup.getKind().isPrimitive())
+    		return true;
+    	
+    	boolean r = super.isSubtype(sub, sup);
+		System.err.printf("isSubtype(%s <: %s) == %s\n", sub, sup, r);
+		return r;
     }
 
 

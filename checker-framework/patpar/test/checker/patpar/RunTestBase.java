@@ -28,7 +28,7 @@ public class RunTestBase {
 			+ "lib/asmx.jar:" + "lib/javaparser.jar:"
 //			+ "jsr308-langtools/binary/javac.jar:" + "jsr308-langtools/binary/javap.jar:"
 			+ "lib/jna.jar";
-	private final String bclasspath = "lib/jsr308-all.jar:lib/jdk.jar";
+	private final String bclasspath = "lib/jsr308-all.jar"; //:lib/jdk.jar";
 
 	public final File sourceDir;
 	public final File javaFile;
@@ -53,7 +53,7 @@ public class RunTestBase {
 		CompilationTask task = comp.getTask(null, fileManager, diag, options, null, compUnits);
 		boolean success = task.call().booleanValue();
 		List<ErrorTemplate> errors = errorTemplates(compUnits);
-//		System.err.printf("options=%s errors=%d diags=%d\n", options, errors.size(), diag.getDiagnostics().size());
+		System.err.printf("options=%s errors=%d diags=%d\n", options, errors.size(), diag.getDiagnostics().size());
 		compareErrors(success, errors, diag);
 	}
 
@@ -156,6 +156,7 @@ public class RunTestBase {
 		options.add("-Xbootclasspath/p:" + bclasspath);
 		options.add("-sourcepath");
 		options.add(sourceDir.getAbsolutePath());
+		options.add("-Astubs=stub");
 		options.add("-processor");
 		options.add(PatparChecker.class.getName());
 //		options.add(JavariChecker.class.getName());

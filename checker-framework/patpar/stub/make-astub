@@ -1,0 +1,2 @@
+#!/bin/bash
+java -cp ../lib/jsr308-all.jar checkers.util.stub.StubGenerator $1 > $1.astub

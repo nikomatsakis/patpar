@@ -8,7 +8,7 @@ import patpar.View;
 public class DivideIntArray {
 	
 	public void foo(final IntArray arr) {
-		arr.divideC(new Closure1<View<CRange,Integer>, Void>() {
+		arr.divideC(1, new Closure1<View<CRange,Integer>, Void>() {
 			@Override protected Void compute(View<CRange, Integer> view) {
 				CRange range = view.range;
 				for (int i = range.min; i < range.max; i++) {
